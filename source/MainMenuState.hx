@@ -25,7 +25,7 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.5.2h'; //This is also used for Discord RPC
+	public static var psychEngineVersion:String = '0.5.2D'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
@@ -35,11 +35,11 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = [
 		'story_mode',
 		'freeplay',
-		#if MODS_ALLOWED 'mods', #end
 		#if ACHIEVEMENTS_ALLOWED 'awards', #end
 		'credits',
 		#if !switch 'donate', #end
 		'options'
+		#if !switch 'Source', #end
 	];
 
 	var magenta:FlxSprite;
@@ -127,7 +127,7 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Dimensional Engine v" + psychEngineVersion, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -198,7 +198,16 @@ class MainMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new TitleState());
 			}
-
+			
+                        if (controls.ACCEPT)
+			{
+				if (optionShit[curSelected] == 'Source')
+				{
+					CoolUtil.browserLoad('https://github.com/bambitheone82112/FNF-DimensionalEngine');
+				}
+				else
+				{
+					
 			if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'donate')
@@ -236,10 +245,6 @@ class MainMenuState extends MusicBeatState
 										MusicBeatState.switchState(new StoryMenuState());
 									case 'freeplay':
 										MusicBeatState.switchState(new FreeplayState());
-									#if MODS_ALLOWED
-									case 'mods':
-										MusicBeatState.switchState(new ModsMenuState());
-									#end
 									case 'awards':
 										MusicBeatState.switchState(new AchievementsMenuState());
 									case 'credits':
